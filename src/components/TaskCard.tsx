@@ -4,6 +4,7 @@ import { TaskData, PomodoroState } from '../types/types';
 import { formatDuration, formatTime } from '../utils/taskUtils';
 import { VideoTaskCard } from './VideoTaskCard';
 import { RadioTaskCard } from './RadioTaskCard';
+import { ProfKhalidTaskCard } from './ProfKhalidTaskCard';
 
 interface TaskCardProps {
   task: TaskData;
@@ -36,6 +37,23 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   if (task.id === 'interactive-videos' && onVideoDataChange) {
     return (
       <VideoTaskCard
+        task={task}
+        day={day}
+        darkMode={darkMode}
+        pomodoroState={pomodoroState}
+        onTaskComplete={onTaskComplete}
+        onTaskDurationChange={onTaskDurationChange}
+        onVideoDataChange={onVideoDataChange}
+        onStartPomodoro={onStartPomodoro}
+        onStopPomodoro={onStopPomodoro}
+      />
+    );
+  }
+
+  // Use ProfKhalidTaskCard for Prof Khalid lessons
+  if (task.id === 'prof-khalid' && onVideoDataChange) {
+    return (
+      <ProfKhalidTaskCard
         task={task}
         day={day}
         darkMode={darkMode}

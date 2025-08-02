@@ -64,6 +64,30 @@ export const getInitialTasks = (day: string): TaskData[] => {
       timeSpent: 0
     },
     {
+      id: 'prof-khalid',
+      name: 'YouTube lessons with Prof Khalid',
+      emoji: '🧑‍🏫',
+      duration: 45,
+      completed: false,
+      description: 'Learn German with Prof Khalid - Gateway to Germany',
+      notes: '',
+      link: 'https://www.youtube.com/@gatewaytogermany',
+      videoTitle: '',
+      videoLink: '',
+      vocabulary: '',
+      exampleSentences: '',
+      videoSummary: '',
+      grammarNotes: '',
+      tags: '#Grammar #Structured #Professor #Arabic',
+      resources: [
+        { name: 'Gateway to Germany', url: 'https://www.youtube.com/@gatewaytogermany', type: 'link' },
+        { name: 'Structured German lessons in Arabic', type: 'note' },
+        { name: 'Grammar explanations', type: 'note' }
+      ],
+      pomodoroSessions: 0,
+      timeSpent: 0
+    },
+    {
       id: 'exam',
       name: 'Prüfungstest (B1, etc.)',
       emoji: '📝',

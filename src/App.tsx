@@ -5,6 +5,7 @@ import { TodayView } from './components/TodayView';
 import { ProgressView } from './components/ProgressView';
 import { LearningPlanView } from './components/LearningPlanView';
 import { CalendarView } from './components/CalendarView';
+import { UserProfileModal } from './components/UserProfileModal';
 import { TaskData, WeekData, PomodoroState, YearlyProgress, Achievement, LearningGoals, LearningPlan } from './types/types';
 import { getInitialWeekData, calculateDayProgress, calculateTotalTime } from './utils/taskUtils';
 import { 
@@ -15,7 +16,7 @@ import {
   getDefaultGoals,
   checkAchievements
 } from './utils/progressUtils';
-import { getStoredData, saveData, getStoredSettings } from './utils/storage';
+import { getStoredData, saveData, getStoredSettings, saveProgressSnapshot, getUserProfile } from './utils/storage';
 import { getDefaultLearningPlan } from './utils/learningPlanUtils';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
   const [achievements, setAchievements] = useState<Achievement[]>(getDefaultAchievements());
   const [goals, setGoals] = useState<LearningGoals>(getDefaultGoals());
   const [learningPlan, setLearningPlan] = useState<LearningPlan>(getDefaultLearningPlan());
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   // Load data on mount
   useEffect(() => {
@@ -60,6 +62,31 @@ function App() {
       viewMode 
     }));
   }, [darkMode, viewMode]);
+
+  // Save daily progress snapshot
+  useEffect(() => {
+    const userProfile = getUserProfile();
+    if (userProfile) {
+      const today = new Date().toISOString().split('T')[0];
+      const todayTasks = weekData[new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() as keyof WeekData].tasks;
+      const todayStats = calculateDailyStats(todayTasks, today);
+      
+      const snapshot = {
+        id: `${userProfile.id}_${today}`,
+        userId: userProfile.id,
+        date: today,
+        weekData,
+        dailyStats: todayStats,
+        achievements,
+        goals,
+        notes: '',
+        reflection: localStorage.getItem(`reflection_${today}`) || '',
+        vocabularyAdded: []
+      };
+      
+      saveProgressSnapshot(snapshot);
+    }
+  }, [weekData, achievements, goals]);
 
   // Update daily progress and check achievements
   useEffect(() => {
@@ -327,6 +354,7 @@ function App() {
         darkMode={darkMode}
         onViewModeChange={setViewMode}
         onDarkModeToggle={() => setDarkMode(!darkMode)}
+        onProfileClick={() => setShowProfileModal(true)}
       />
       
       <main className="container mx-auto px-4 py-6">
@@ -374,6 +402,12 @@ function App() {
           />
         )}
       </main>
+      
+      <UserProfileModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+        darkMode={darkMode}
+      />
     </div>
   );
 }

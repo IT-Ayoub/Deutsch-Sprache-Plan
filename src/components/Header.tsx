@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, Sun, Moon, Calendar, Clock, TrendingUp, BookOpen, CalendarDays } from 'lucide-react';
+import { Flame, Sun, Moon, Calendar, Clock, TrendingUp, BookOpen, CalendarDays, User } from 'lucide-react';
 
 interface HeaderProps {
   streak: number;
@@ -8,6 +8,7 @@ interface HeaderProps {
   darkMode: boolean;
   onViewModeChange: (mode: 'today' | 'week' | 'progress' | 'plan' | 'calendar') => void;
   onDarkModeToggle: () => void;
+  onProfileClick: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -16,7 +17,8 @@ export const Header: React.FC<HeaderProps> = ({
   viewMode,
   darkMode,
   onViewModeChange,
-  onDarkModeToggle
+  onDarkModeToggle,
+  onProfileClick
 }) => {
   return (
     <header className={`${
@@ -120,6 +122,18 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             
             {/* Dark Mode Toggle */}
+            <button
+              onClick={onProfileClick}
+              className={`p-2 rounded-lg transition-colors ${
+                darkMode
+                  ? 'bg-slate-700 hover:bg-slate-600 text-blue-400'
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+              }`}
+              title="User Profile"
+            >
+              <User className="w-5 h-5" />
+            </button>
+            
             <button
               onClick={onDarkModeToggle}
               className={`p-2 rounded-lg transition-colors ${

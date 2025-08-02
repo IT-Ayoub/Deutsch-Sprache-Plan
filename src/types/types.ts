@@ -17,6 +17,9 @@ export interface TaskData {
   videoSummary?: string;
   grammarNotes?: string;
   tags?: string;
+  professorNotes?: string;
+  lessonNumber?: string;
+  difficultyLevel?: string;
   radioStation?: string;
   topicsDiscussed?: string;
   germanSummary?: string;
@@ -34,6 +37,65 @@ export interface VocabularyEntry {
   level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
   dateAdded: string;
   source: string;
+}
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+  targetLevel: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+  startDate: string;
+  targetDate: string;
+  dailyGoalMinutes: number;
+  preferences: {
+    darkMode: boolean;
+    notifications: boolean;
+    language: 'en' | 'de' | 'ar';
+  };
+}
+
+export interface ProgressSnapshot {
+  id: string;
+  userId: string;
+  date: string;
+  weekData: WeekData;
+  dailyStats: DailyStats;
+  achievements: Achievement[];
+  goals: LearningGoals;
+  notes: string;
+  reflection: string;
+  vocabularyAdded: VocabularyEntry[];
+}
+
+export interface MonthlyReport {
+  userId: string;
+  year: number;
+  month: number;
+  totalHours: number;
+  totalDays: number;
+  averageDaily: number;
+  completionRate: number;
+  topTasks: { taskId: string; completions: number }[];
+  vocabularyLearned: number;
+  achievements: Achievement[];
+  reflection: string;
+}
+
+export interface YearlyReport {
+  userId: string;
+  year: number;
+  totalHours: number;
+  totalDays: number;
+  monthlyBreakdown: MonthlyReport[];
+  levelProgress: {
+    startLevel: string;
+    currentLevel: string;
+    targetLevel: string;
+  };
+  achievements: Achievement[];
+  vocabularyBank: VocabularyEntry[];
+  reflection: string;
 }
 
 export interface Resource {

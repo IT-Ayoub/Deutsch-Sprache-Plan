@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TaskCard } from './TaskCard';
 import { TaskData, PomodoroState } from '../types/types';
 import { getDayName } from '../utils/taskUtils';

@@ -1,35 +1,39 @@
 import React from 'react';
-import { Day } from '../types/types';
+import { Task } from '../types/types';
 import { TaskCard } from './TaskCard';
-import { VideoTaskCard } from './VideoTaskCard';
-import { RadioTaskCard } from './RadioTaskCard';
-import { ProfKhalidTaskCard } from './ProfKhalidTaskCard';
+import { getDayName } from '../utils/taskUtils';
 
 interface DayCardProps {
-  day: Day;
+  day: string;
+  tasks: Task[];
+  darkMode: boolean;
+  pomodoroState: any;
   onTaskToggle: (dayId: string, taskId: string) => void;
   onSubtaskToggle: (dayId: string, taskId: string, subtaskIndex: number) => void;
-  onVideoProgressUpdate: (dayId: string, taskId: string, field: string, value: string) => void;
-  onRadioProgressUpdate: (dayId: string, taskId: string, field: string, value: string) => void;
-  onProfKhalidProgressUpdate: (dayId: string, taskId: string, field: string, value: string) => void;
+  onVideoDataChange: (dayId: string, taskId: string, field: string, value: string) => void;
+  onRadioDataChange: (dayId: string, taskId: string, field: string, value: string) => void;
+  onProfKhalidDataChange: (dayId: string, taskId: string, field: string, value: string) => void;
 }
 
 export const DayCard: React.FC<DayCardProps> = ({
   day,
+  tasks,
+  darkMode,
+  pomodoroState,
   onTaskToggle,
   onSubtaskToggle,
-  onVideoProgressUpdate,
-  onRadioProgressUpdate,
-  onProfKhalidProgressUpdate,
+  onVideoDataChange,
+  onRadioDataChange,
+  onProfKhalidDataChange,
 }) => {
-  const completedTasks = day.tasks.filter(task => task.completed).length;
-  const totalTasks = day.tasks.length;
+  const completedTasks = tasks.filter(task => task.completed).length;
+  const totalTasks = tasks.length;
   const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-bold text-gray-800">{day.name}</h3>
+        <h3 className="text-xl font-bold text-gray-800">{getDayName(day)}</h3>
         <div className="flex items-center space-x-2">
           <div className="text-sm text-gray-600">
             {completedTasks}/{totalTasks} tasks
@@ -48,48 +52,19 @@ export const DayCard: React.FC<DayCardProps> = ({
       </div>
 
       <div className="space-y-4">
-        {day.tasks.map((task) => {
-          if (task.type === 'video') {
-            return (
-              <VideoTaskCard
-                key={task.id}
-                task={task}
-                onToggle={() => onTaskToggle(day.id, task.id)}
-                onSubtaskToggle={(subtaskIndex) => onSubtaskToggle(day.id, task.id, subtaskIndex)}
-                onProgressUpdate={(field, value) => onVideoProgressUpdate(day.id, task.id, field, value)}
-              />
-            );
-          } else if (task.type === 'radio') {
-            return (
-              <RadioTaskCard
-                key={task.id}
-                task={task}
-                onToggle={() => onTaskToggle(day.id, task.id)}
-                onSubtaskToggle={(subtaskIndex) => onSubtaskToggle(day.id, task.id, subtaskIndex)}
-                onProgressUpdate={(field, value) => onRadioProgressUpdate(day.id, task.id, field, value)}
-              />
-            );
-          } else if (task.type === 'profkhalid') {
-            return (
-              <ProfKhalidTaskCard
-                key={task.id}
-                task={task}
-                onToggle={() => onTaskToggle(day.id, task.id)}
-                onSubtaskToggle={(subtaskIndex) => onSubtaskToggle(day.id, task.id, subtaskIndex)}
-                onProgressUpdate={(field, value) => onProfKhalidProgressUpdate(day.id, task.id, field, value)}
-              />
-            );
-          } else {
-            return (
-              <TaskCard
-                key={task.id}
-                task={task}
-                onToggle={() => onTaskToggle(day.id, task.id)}
-                onSubtaskToggle={(subtaskIndex) => onSubtaskToggle(day.id, task.id, subtaskIndex)}
-              />
-            );
-          }
-        })}
+        {tasks.map((task) => (
+          <TaskCard
+            key={task.id}
+            task={task}
+            darkMode={darkMode}
+            pomodoroState={pomodoroState}
+            onToggle={() => onTaskToggle(day, task.id)}
+            onSubtaskToggle={(subtaskIndex) => onSubtaskToggle(day, task.id, subtaskIndex)}
+            onVideoDataChange={(field, value) => onVideoDataChange(day, task.id, field, value)}
+            onRadioDataChange={(field, value) => onRadioDataChange(day, task.id, field, value)}
+            onProfKhalidDataChange={(field, value) => onProfKhalidDataChange(day, task.id, field, value)}
+          />
+        ))}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TaskCard } from './TaskCard';
+import { VocabularyBankView } from './VocabularyBankView';
 import { TaskData, PomodoroState } from '../types/types';
 import { getDayName } from '../utils/taskUtils';
 
@@ -35,6 +36,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
   const completedTasks = data.tasks.filter(task => task.completed).length;
   const currentDay = new Date().toLocaleDateString('de-DE', { weekday: 'long' });
   const [dailyReflection, setDailyReflection] = useState('');
+  const [showVocabularyBank, setShowVocabularyBank] = useState(false);
 
   // Load daily reflection from localStorage
   useEffect(() => {
@@ -49,6 +51,15 @@ export const TodayView: React.FC<TodayViewProps> = ({
     setDailyReflection(reflection);
     localStorage.setItem(`reflection_${new Date().toISOString().split('T')[0]}`, reflection);
   };
+  
+  if (showVocabularyBank) {
+    return (
+      <VocabularyBankView
+        darkMode={darkMode}
+        onClose={() => setShowVocabularyBank(false)}
+      />
+    );
+  }
   
   return (
     <div className="max-w-4xl mx-auto">
@@ -151,11 +162,14 @@ export const TodayView: React.FC<TodayViewProps> = ({
           <h3 className="text-lg font-semibold flex items-center gap-2">
             📁 My Vocabulary Bank
           </h3>
-          <button className="text-sm text-blue-500 hover:text-blue-600">
+          <button 
+            onClick={() => setShowVocabularyBank(true)}
+            className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
+          >
             View All →
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           <div className={`p-3 rounded-lg ${darkMode ? 'bg-slate-700' : 'bg-gray-50'}`}>
             <div className="flex items-center justify-between mb-1">
               <span className="font-medium">sich gewöhnen an</span>
@@ -171,6 +185,56 @@ export const TodayView: React.FC<TodayViewProps> = ({
             </div>
             <p className="text-sm text-gray-500">in my opinion</p>
             <p className="text-xs text-gray-400 mt-1">Meiner Meinung nach ist das richtig.</p>
+          </div>
+          <div className={`p-3 rounded-lg ${darkMode ? 'bg-slate-700' : 'bg-gray-50'}`}>
+            <div className="flex items-center justify-between mb-1">
+              <span className="font-medium">die Nachhaltigkeit</span>
+              <span className="text-xs px-2 py-0.5 bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 rounded-full">B2</span>
+            </div>
+            <p className="text-sm text-gray-500">sustainability</p>
+            <p className="text-xs text-gray-400 mt-1">Nachhaltigkeit ist wichtig.</p>
+          </div>
+          <div className={`p-3 rounded-lg ${darkMode ? 'bg-slate-700' : 'bg-gray-50'}`}>
+            <div className="flex items-center justify-between mb-1">
+              <span className="font-medium">übrigens</span>
+              <span className="text-xs px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full">A2</span>
+            </div>
+            <p className="text-sm text-gray-500">by the way</p>
+            <p className="text-xs text-gray-400 mt-1">Übrigens, danke für deine Hilfe!</p>
+          </div>
+          <div className={`p-3 rounded-lg ${darkMode ? 'bg-slate-700' : 'bg-gray-50'}`}>
+            <div className="flex items-center justify-between mb-1">
+              <span className="font-medium">das macht Sinn</span>
+              <span className="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full">expr</span>
+            </div>
+            <p className="text-sm text-gray-500">that makes sense</p>
+            <p className="text-xs text-gray-400 mt-1">Deine Erklärung macht Sinn.</p>
+          </div>
+          <div className={`p-3 rounded-lg ${darkMode ? 'bg-slate-700' : 'bg-gray-50'}`}>
+            <div className="flex items-center justify-between mb-1">
+              <span className="font-medium">die Gemütlichkeit</span>
+              <span className="text-xs px-2 py-0.5 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full">culture</span>
+            </div>
+            <p className="text-sm text-gray-500">coziness, comfort</p>
+            <p className="text-xs text-gray-400 mt-1">Deutsche Cafés haben Gemütlichkeit.</p>
+          </div>
+        </div>
+        
+        {/* Quick Stats */}
+        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700">
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div className="text-lg font-bold text-blue-500">47</div>
+              <div className="text-xs text-gray-500">Total Words</div>
+            </div>
+            <div>
+              <div className="text-lg font-bold text-green-500">23</div>
+              <div className="text-xs text-gray-500">B1-B2 Level</div>
+            </div>
+            <div>
+              <div className="text-lg font-bold text-purple-500">5</div>
+              <div className="text-xs text-gray-500">Added Today</div>
+            </div>
           </div>
         </div>
       </div>

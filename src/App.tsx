@@ -5,6 +5,7 @@ import { TodayView } from './components/TodayView';
 import { ProgressView } from './components/ProgressView';
 import { LearningPlanView } from './components/LearningPlanView';
 import { CalendarView } from './components/CalendarView';
+import { VocabularyBankView } from './components/VocabularyBankView';
 import { UserProfileModal } from './components/UserProfileModal';
 import { TaskData, WeekData, PomodoroState, YearlyProgress, Achievement, LearningGoals, LearningPlan } from './types/types';
 import { getInitialWeekData, calculateDayProgress, calculateTotalTime } from './utils/taskUtils';
@@ -387,6 +388,11 @@ function App() {
         ) : viewMode === 'calendar' ? (
           <CalendarView
             darkMode={darkMode}
+          />
+        ) : viewMode === 'vocabulary' ? (
+          <VocabularyBankView
+            darkMode={darkMode}
+            onClose={() => setViewMode('week')}
           />
         ) : (
           <WeekView 

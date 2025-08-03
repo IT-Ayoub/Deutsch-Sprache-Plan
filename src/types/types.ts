@@ -37,6 +37,10 @@ export interface VocabularyEntry {
   level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
   dateAdded: string;
   source: string;
+  category: string;
+  pronunciation?: string;
+  synonyms?: string[];
+  antonyms?: string[];
 }
 
 export interface UserProfile {

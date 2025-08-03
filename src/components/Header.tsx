@@ -1,12 +1,12 @@
 import React from 'react';
-import { Flame, Sun, Moon, Calendar, Clock, TrendingUp, BookOpen, CalendarDays, User } from 'lucide-react';
+import { Flame, Sun, Moon, Calendar, Clock, TrendingUp, BookOpen, CalendarDays, User, Library } from 'lucide-react';
 
 interface HeaderProps {
   streak: number;
   todayProgress: number;
-  viewMode: 'today' | 'week' | 'progress' | 'plan' | 'calendar';
+  viewMode: 'today' | 'week' | 'progress' | 'plan' | 'calendar' | 'vocabulary';
   darkMode: boolean;
-  onViewModeChange: (mode: 'today' | 'week' | 'progress' | 'plan' | 'calendar') => void;
+  onViewModeChange: (mode: 'today' | 'week' | 'progress' | 'plan' | 'calendar' | 'vocabulary') => void;
   onDarkModeToggle: () => void;
   onProfileClick: () => void;
 }
@@ -118,6 +118,19 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <CalendarDays className="w-4 h-4" />
                 Kalender
+              </button>
+              <button
+                onClick={() => onViewModeChange('vocabulary')}
+                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors flex items-center gap-1 ${
+                  viewMode === 'vocabulary'
+                    ? 'bg-blue-500 text-white'
+                    : darkMode
+                    ? 'text-gray-300 hover:text-white'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Library className="w-4 h-4" />
+                Vokabeln
               </button>
             </div>
             
